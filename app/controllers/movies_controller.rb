@@ -2,17 +2,17 @@ class MoviesController < ApplicationController
 
   def show
     @movie = Movie.find(params[:id])
-    render json: @movie.json_format(request.base_url)
+    if params[:relation] == 'related'
+      render json: @movie.related_movies.map { |rel| rel.json_format(request.base_url, collection=true) }
+    else
+      render json: @movie.json_format(request.base_url)
+    end
   end
 
 
   def index
-
+    @movies = Movie.all
+    render json: @movies.map { |movie| movie.json_format(request.base_url, collection=true) }
   end
-
-  # private
-  # def movie_params
-  #   params.require()
-  # end
 
 end

@@ -3,7 +3,14 @@ class Movie < ApplicationRecord
   has_many :related_movies, through: :movie_relationships, source: :other_movie
 
 
-  def json_format(url)
+
+  def attribute_format(attribute)
+    json_response = {}
+    json_response[:links] = {self: url + "/movies/#{self.id}"}
+
+  end
+
+  def json_format(url, collection=false)
     json_response = {}
     json_response[:links] = {self: url + "/movies/#{self.id}"}
     json_response[:data] = {
@@ -15,12 +22,24 @@ class Movie < ApplicationRecord
         year: self.year
       }
     }
-    json_response[:relationships] = {
-      links: {
-        related: self.related_movies.map { |mov| url + "/movies/#{mov.id}" }
+    unless collection
+      json_response[:relationships] = {
+        related_movies: {
+          links: related_movies_object(url)
+        }
       }
-    }
+    end
     return json_response
+  end
+
+  private
+
+  def related_movies_object(url)
+    related_movies = {}
+    self.related_movies.each do |movie|
+      related_movies[movie.title] = url + "/movies/#{movie.id}"
+    end
+    return related_movies
   end
 
 end
