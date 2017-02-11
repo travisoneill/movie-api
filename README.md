@@ -8,10 +8,14 @@ GET /movies/1
 ```
 #####RELATION#####
 options:
+
 -related (0 points for creativity)
 
 if optional relation param is provided returns collection of the related
 movies to the id provided
+
+TODO: Should give the user option to add query string here
+
 ```
 GET /movies/1/related
 ```
@@ -40,7 +44,7 @@ year={exact year}
 ```
 GET /movies?year=1988
 ```
-year={<start_year>-<end_year>}
+year={{start_year}-{end_year}}
 ```
 GET /movies?year=1988-2000
 ```
@@ -50,20 +54,24 @@ GET /movies?year=1988-2000
 sort={attr}
 
 options:
+
 -title
+
 -year
+
 -id
 
+default: id
 ```
 GET /movies?year=1988-2000&sort=title
 ```
 
-default: id
-
 sort_order={order}
 
 options
+
 -[ascending, asc, a]
+
 -[descending, desc, d]
 
 default: desc
