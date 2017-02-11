@@ -1,24 +1,73 @@
-# README
+##API ENDPOINTS##
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+#####/movies/:id(/:relation)#####
 
-Things you may want to cover:
+returns individual movie object if no relation param
+```
+GET /movies/1
+```
+#####RELATION#####
+options:
+-related (0 points for creativity)
 
-* Ruby version
+if optional relation param is provided returns collection of the related
+movies to the id provided
+```
+GET /movies/1/related
+```
 
-* System dependencies
+#####/movies?{query}#####
 
-* Configuration
+if no query returns collection of all movies
+```
+GET /movies
+```
 
-* Database creation
 
-* Database initialization
+###QUERIES###
 
-* How to run the test suite
+#####TITLE#####
 
-* Services (job queues, cache servers, search engines, etc.)
+title={title} (case insensitive)
+```
+GET /movies?title=the%20godfather
+```
 
-* Deployment instructions
+#####YEAR#####
 
-* ...
+year={exact year}
+
+```
+GET /movies?year=1988
+```
+year={<start_year>-<end_year>}
+```
+GET /movies?year=1988-2000
+```
+
+#####SORTING RESULTS#####
+
+sort={attr}
+
+options:
+-title
+-year
+-id
+
+```
+GET /movies?year=1988-2000&sort=title
+```
+
+default: id
+
+sort_order={order}
+
+options
+-[ascending, asc, a]
+-[descending, desc, d]
+
+default: desc
+
+```
+GET /movies?year=1988-2000&sort=tile&sort_order=desc
+```
