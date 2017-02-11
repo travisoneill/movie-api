@@ -1,7 +1,7 @@
 class MoviesController < ApplicationController
 
   def show
-    byebug
+    # byebug
     @movie = Movie.find(params[:id])
     if params[:relation] == 'related'
       render json: @movie.related_movies.map { |rel| rel.json_format(request.base_url, collection=true) }
@@ -12,8 +12,8 @@ class MoviesController < ApplicationController
 
 
   def index
-    byebug
-    @movies = Movie.all
+    # byebug
+    @movies = Movie.build_query(params)
     render json: @movies.map { |movie| movie.json_format(request.base_url, collection=true) }
   end
 
