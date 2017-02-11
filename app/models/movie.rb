@@ -1,6 +1,7 @@
 class Movie < ApplicationRecord
   has_many :movie_relationships, foreign_key: :movie_id1, class_name: 'MovieRelationship'
   has_many :related_movies, through: :movie_relationships, source: :other_movie
+  has_many :ratings, class_name: 'MovieRelationship', foreign_key: :movie_id
 
   def json_format(url, collection=false)
     json_response = {}
