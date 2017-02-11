@@ -1,7 +1,11 @@
 class Movie < ApplicationRecord
   has_many :movie_relationships, foreign_key: :movie_id1, class_name: 'MovieRelationship'
   has_many :related_movies, through: :movie_relationships, source: :other_movie
-  has_many :ratings, class_name: 'MovieRelationship', foreign_key: :movie_id
+  has_many :ratings, class_name: 'MovieRating', foreign_key: :movie_id
+
+  def average_rating
+    return self.ratings.average(:rating).to_i
+  end
 
   def json_format(url, collection=false)
     json_response = {}
@@ -11,6 +15,7 @@ class Movie < ApplicationRecord
       id: self.id,
       attributes: {
         title: self.title,
+        rating: self.average_rating, 
         description: self.description,
         year: self.year
       }
