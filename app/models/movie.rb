@@ -4,7 +4,7 @@ class Movie < ApplicationRecord
   has_many :ratings, class_name: 'MovieRating', foreign_key: :movie_id
 
   def average_rating
-    return self.ratings.average(:rating).to_i
+    return self.ratings.average(:rating).to_f
   end
 
   def json_format(url, collection=false)
@@ -15,7 +15,7 @@ class Movie < ApplicationRecord
       id: self.id,
       attributes: {
         title: self.title,
-        rating: self.average_rating, 
+        rating: self.average_rating,
         description: self.description,
         year: self.year
       }
@@ -47,31 +47,29 @@ class Movie < ApplicationRecord
     end
 
     if request_params[:sort]
-      sort_attr = request_params[:sort]
-      order = request_params[:sort_order].downcase
-      if order
-        if ['d', 'desc', 'descending'].include?(order)
-          sort_order = :desc
-        elsif ['a', 'asc', 'ascending'].include?(order)
-          sort_order = :asc
-        else
-          raise 'INVALID SORT ORDER'
-        end
+      # if !['titile', 'year', 'id'].include?(request_params[:sort])
+      if request_params[:sort][0] == '-'
+        order_object[request_params[:sort][1..-1].to_sym] = :desc
+      else
+        order_object[request_params[:sort]] = :asc
       end
-      order_object[sort_attr.to_sym] = sort_order
     end
 
-    puts query_object
-    puts order_object
     return Movie.order(order_object).where(query_object)
   end
+
+  def self.empty(request_params)
+
+  end  
 
   private
 
   def related_movies_object(url)
-    related_movies = {}
+    related_movies = []
     self.related_movies.each do |movie|
-      related_movies[movie.title] = url + "/movies/#{movie.id}"
+      obj = {}
+      obj[movie.title.to_sym] = url + "/movies/#{movie.id}"
+      related_movies << obj
     end
     return related_movies
   end

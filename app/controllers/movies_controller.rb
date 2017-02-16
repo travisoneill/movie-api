@@ -3,7 +3,7 @@ class MoviesController < ApplicationController
   def show
     # byebug
     url = request.base_url + request.path + request.query_string
-    @movie = Movie.find(params[:id])
+    @movie = Movie.find_by(id: params[:id])
     if params[:relation] == 'related'
       render json: {
         links: { self: url },
