@@ -19,20 +19,38 @@ class ApplicationController < ActionController::Base
         return
       end
     end
-    if params[:sort]
-      check_sort
-    end
+    return unless check_sort
+    return unless check_relation
   end
 
   def check_sort
     if params[:sort]
-      # byebug
       allowed = SORT_ATTRS[:always] + SORT_ATTRS[request.params[:controller].to_sym]
       attribute = params[:sort][0] == '-' ? params[:sort][1..-1] : params[:sort]
       unless allowed.include?(attribute)
         unpermitted_sort
+        return false
       end
     end
+    return true
+  end
+
+  def check_relation
+    if params[:relation]
+      allowed = params[:controller].classify.constantize::INCLUDED_RELATIONS
+      unless allowed.include?(params[:relation].to_sym)
+        unpermitted_relation
+        return false
+      end
+    end
+    return true
+  end
+
+  def unpermitted_relation
+    response = ErrorObject.new(404)
+    response.set_message("Unsupported Relation Query: #{params[:relation]}")
+    response.set_link('fetching-relationships')
+    render json: { errors: [response] }, status: 404
   end
 
   def unpermitted_sort
@@ -54,7 +72,7 @@ end
 #add new permitted params to an array with the key set to the controller name
 PERMITTED = {
   'always': [:controller, :action],
-  'movies': [:title, :year, :sort, :id, :related_movies],
+  'movies': [:title, :year, :sort, :id, :relation],
   'movie_ratings': [:movie_id, :rating, :movie_rating]
 }
 
