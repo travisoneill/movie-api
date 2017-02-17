@@ -3,6 +3,9 @@
 # Initial Setup: (skip if rails and bundler gems installed on your machine) requires Ruby
 $ gem install rails
 $ gem install bundler
+```
+Run the API locally:
+```bash
 # Clone the repo and run the app:
 $ git clone https://github.com/travisoneill/movie-api.git
 $ cd movie-api
