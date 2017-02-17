@@ -10,29 +10,6 @@ class Movie < ApplicationRecord
     return self.ratings.average(:rating).to_f
   end
 
-  # def json_format(url, collection=false)
-  #   json_response = {}
-  #   json_response[:links] = {self: url + "/movies/#{self.id}"}
-  #   json_response[:data] = {
-  #     type: 'movies',
-  #     id: self.id,
-  #     attributes: {
-  #       title: self.title,
-  #       rating: self.average_rating,
-  #       description: self.description,
-  #       year: self.year
-  #     }
-  #   }
-  #   unless collection
-  #     json_response[:relationships] = {
-  #       related_movies: {
-  #         links: related_movies_object(url)
-  #       }
-  #     }
-  #   end
-  #   return json_response
-  # end
-
   def self.build_query(request_params)
     query_object = {}
     order_object = {}
@@ -59,24 +36,5 @@ class Movie < ApplicationRecord
 
     return Movie.order(order_object).where(query_object)
   end
-
-  # def self.empty(request_params)
-  #   {
-  #
-  #   }
-  # end
-
-
-  private
-
-  # def related_movies_object(url)
-  #   related_movies = []
-  #   self.related_movies.each do |movie|
-  #     obj = {}
-  #     obj[movie.title.to_sym] = url + "/movies/#{movie.id}"
-  #     related_movies << obj
-  #   end
-  #   return related_movies
-  # end
 
 end
