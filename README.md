@@ -21,6 +21,10 @@ $ bundle exec rails s
 
 ##API ENDPOINTS##
 
+Include the following headers in all requests:
+'Content-Type': 'application/vnd.api+json'
+'Accept': 'application/vnd.api+json'
+
 #####/movies/:id(/:relation)#####
 
 returns individual movie object if no relation param
@@ -47,7 +51,6 @@ if no query returns collection of all movies
 ```
 GET /movies
 ```
-
 
 ###QUERIES###
 
@@ -92,4 +95,30 @@ of the sort attribute.
 
 ```
 GET /movies?year=1988-2000&sort=-title
+```
+
+###RATINGS###
+
+```
+POST /movie_ratings
+```
+
+```
+PATCH /movie_ratings
+```
+
+Send a MovieRating resource object as request data to create or update a user rating
+format:
+
+```json
+{
+  "data": {
+    "type": "movie_rating",
+    "attributes": {
+      "movie_id": 9,
+      "user_id": 2,
+      "rating": 4
+    }
+  }
+}
 ```
