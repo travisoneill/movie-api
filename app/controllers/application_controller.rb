@@ -67,6 +67,10 @@ class ApplicationController < ActionController::Base
     render json: { errors: [response] }, status: 404
   end
 
+  def url
+    request.base_url + request.path + request.query_string
+  end
+
 end
 
 #add new permitted params to an array with the key set to the controller name
