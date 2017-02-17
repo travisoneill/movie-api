@@ -1,7 +1,10 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  #bypass csrf security for json requests
+  protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/vnd.api+json' }
   before_action :check_headers
   before_action :check_query_params
+
+
 
   # send 415 if content type header does not match specification
   def check_headers
