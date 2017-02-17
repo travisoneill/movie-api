@@ -8,21 +8,16 @@ class MoviesController < ApplicationController
     elsif @movie
       render json: @movie.resource_json({ rating: @movie.average_rating })
     else
-      render json: {
-        links: { self: url },
-        data: nil
-      }
+      render json: { links: { self: url }, data: nil }
     end
   end
 
 
   def index
-    # byebug
-    url = request.base_url + request.path + request.query_string
     @movies = Movie.build_query(params)
     render json: {
       links: { self: url },
-      data: @movie.send(params[:relation]).map { |rel| rel.resource_json( {rating: rel.average_rating}, true ) }
+      data: @movies.map { |movie| movie.resource_json( {rating: movie.average_rating}, true ) }
     }
   end
 

@@ -8,7 +8,8 @@ class MovieRatingsController < ApplicationController
     unless @user
       return invalid_session
     end
-    @movie = Movie.find_by(id: params[:movie_id])
+    movie_id = params[:data][:attributes][:movie_id]
+    @movie = Movie.find_by(id: movie_id)
     unless @movie
       return invalid_movie
     end
@@ -19,7 +20,8 @@ class MovieRatingsController < ApplicationController
     if @movie_rating
       rating_conflict
     else
-      @movie_rating = MovieRating.new({ user_id: @user.id, movie_id: @movie.id, rating: params[:rating] })
+      rating = params[:data][:attributes][:rating]
+      @movie_rating = MovieRating.new({ user_id: @user.id, movie_id: @movie.id, rating: rating })
       begin
         @movie_rating.save!
       rescue => error
@@ -27,7 +29,7 @@ class MovieRatingsController < ApplicationController
         response.set_message("Database error saving object: #{error}")
         render json: { errors: [response] }, status: 500
       else
-        render json: @movie_rating
+        render json: @movie_rating.resource_json, status: 202
       end
     end
   end

@@ -4,7 +4,7 @@ class User < ApplicationRecord
   def self.get_current(session)
     security_disabled = true
     if security_disabled
-      return User.first
+      return User.all.sample
     else
       return User.find_by(session: session)
     end

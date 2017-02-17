@@ -68,7 +68,11 @@ class ApplicationController < ActionController::Base
   end
 
   def url
-    request.base_url + request.path + request.query_string
+    url = request.base_url + request.path
+    if request.query_string
+      url += '?' + request.query_string
+    end
+    return url
   end
 
 end
@@ -77,11 +81,11 @@ end
 PERMITTED = {
   'always': [:controller, :action],
   'movies': [:title, :year, :sort, :id, :relation],
-  'movie_ratings': [:movie_id, :rating, :movie_rating]
+  'movie_ratings': [:movie_rating, :data]
 }
 
 #add new permitted sort attributes here
 SORT_ATTRS = {
   'always': [],
-  'movies': ['title', 'year', 'id']
+  'movies': ['title', 'year', 'id', 'rating']
 }
