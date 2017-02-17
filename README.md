@@ -1,3 +1,21 @@
+##QUICK START##
+```bash
+# Initial Setup: (skip if rails and bundler gems installed on your machine) requires Ruby
+$ gem install rails
+$ gem install bundler
+# Clone the repo and run the app:
+$ git clone https://github.com/travisoneill/movie-api.git
+$ cd movie-api
+# Install dependencies
+$ bundle install
+# Setup database
+$ rake db:create
+$ rake db:migrate
+$ rake db:seed
+# Run the server
+$ bundle exec rails s
+```
+
 ##API ENDPOINTS##
 
 #####/movies/:id(/:relation)#####
@@ -9,7 +27,7 @@ GET /movies/1
 #####RELATION#####
 options:
 
--related (0 points for creativity)
+-related_movies (0 points for creativity)
 
 if optional relation param is provided returns collection of the related
 movies to the id provided
@@ -17,7 +35,7 @@ movies to the id provided
 TODO: Should give the user option to add query string here
 
 ```
-GET /movies/1/related
+GET /movies/1/related_movies
 ```
 
 #####/movies?{query}#####
@@ -66,16 +84,9 @@ default: id
 GET /movies?year=1988-2000&sort=title
 ```
 
-sort_order={order}
-
-options
-
--[ascending, asc, a]
-
--[descending, desc, d]
-
-default: desc
+Sort order is ascending by default.  To sort descending put a '-' in front
+of the sort attribute.
 
 ```
-GET /movies?year=1988-2000&sort=tile&sort_order=desc
+GET /movies?year=1988-2000&sort=-title
 ```
