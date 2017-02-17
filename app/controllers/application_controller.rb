@@ -35,7 +35,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def unpermitted_sort
     response = ErrorObject.new(404)
     response.set_message("Unsupported Sort Parameter: #{params[:sort]}. Supported sort params: 'title', 'year', 'id'. Add a leading '-' to sort descending.")
@@ -55,7 +54,8 @@ end
 #add new permitted params to an array with the key set to the controller name
 PERMITTED = {
   'always': [:controller, :action],
-  'movies': [:title, :year, :sort, :id]
+  'movies': [:title, :year, :sort, :id],
+  'movie_ratings': [:movie_id, :rating, :movie_rating]
 }
 
 #add new permitted sort attributes here

@@ -21,6 +21,12 @@ class ErrorObject
       'Not Acceptable'
     when 404
       'Bad Request'
+    when 403
+      'Forbidden'
+    when 409
+      'Conflict'
+    when 500
+      'Internal Server Error'  
     end
   end
 
