@@ -3,6 +3,9 @@ class Movie < ApplicationRecord
   has_many :related_movies, through: :movie_relationships, source: :other_movie
   has_many :ratings, class_name: 'MovieRating', foreign_key: :movie_id
 
+  #Set relations to be included in response
+  INCLUDED_RELATIONS = [:related_movies]
+
   def average_rating
     return self.ratings.average(:rating).to_f
   end
@@ -59,8 +62,11 @@ class Movie < ApplicationRecord
   end
 
   def self.empty(request_params)
+    {
 
-  end  
+    }
+  end
+
 
   private
 

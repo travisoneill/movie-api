@@ -4,13 +4,15 @@ class MoviesController < ApplicationController
     # byebug
     url = request.base_url + request.path + request.query_string
     @movie = Movie.find_by(id: params[:id])
-    if params[:relation] == 'related'
+    if params[:relation]
       render json: {
         links: { self: url },
-        data: @movie.related_movies.map { |rel| rel.json_format(request.base_url, collection=true) }
+        data: @movie.send(params[:relation]).map { |rel| rel.json_format(request.base_url, collection=true) }
       }
-    else
+    elsif @movie
       render json: @movie.json_format(request.base_url)
+    else
+      render json
     end
   end
 

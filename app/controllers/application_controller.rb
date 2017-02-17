@@ -54,7 +54,7 @@ end
 #add new permitted params to an array with the key set to the controller name
 PERMITTED = {
   'always': [:controller, :action],
-  'movies': [:title, :year, :sort, :id],
+  'movies': [:title, :year, :sort, :id, :related_movies],
   'movie_ratings': [:movie_id, :rating, :movie_rating]
 }
 
