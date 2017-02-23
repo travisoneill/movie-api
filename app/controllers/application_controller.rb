@@ -4,8 +4,6 @@ class ApplicationController < ActionController::Base
   before_action :check_headers
   before_action :check_query_params
 
-
-
   # send 415 if content type header does not match specification
   def check_headers
     return if request.method == 'GET'
@@ -40,7 +38,7 @@ class ApplicationController < ActionController::Base
 
   def check_relation
     if params[:relation]
-      allowed = params[:controller].classify.constantize::INCLUDED_RELATIONS
+      allowed = params[:controller].gsub('_relations', '').classify.constantize::INCLUDED_RELATIONS
       unless allowed.include?(params[:relation].to_sym)
         unpermitted_relation
         return false
@@ -84,7 +82,8 @@ end
 PERMITTED = {
   'always': [:controller, :action],
   'movies': [:title, :year, :sort, :id, :relation],
-  'movie_ratings': [:movie_rating, :data]
+  'movie_ratings': [:movie_rating, :data],
+  'movie_relations': [:movie_id, :id]
 }
 
 #add new permitted sort attributes here

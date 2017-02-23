@@ -40,7 +40,6 @@ class ApplicationRecord < ActiveRecord::Base
   def relationship_object
     relation_obj = {}
     relationships = self.class::INCLUDED_RELATIONS
-    byebug
     relationships.each do |relation|
       controller = self.class.reflect_on_association(relation).class_name.constantize.controller_name
       links = { related: base_url + '/' + controller + '/' + self.id.to_s + '/' + relation.to_s }
